@@ -1,8 +1,8 @@
 # SS modifier
 
-An Api for converting your surge configuration.
+An API for converting your surge configuration.
 
-You can simply insert, replace or delete some config in your surge profile. All you need to do is writing a modifier config file and update your managed URL.
+You can simply insert, replace, or delete some config in your surge profile. All you need to do is writing a modifier config file and update your managed URL.
 
 - [Intro](#Intro)
 - [Modifier format](#Modifier)
@@ -26,17 +26,17 @@ Feel free to leave any issues.
 >
 > `preview` (Bool, optional, default to false): if set to true, the response content type will be set to `text/plain`.
 >
-> `managed` (Bool, optional, default to true): if set to false, the surge config will not managed by url.
+> `managed` (Bool, optional, default to true): If set to false, the surge config will not be managed by URL.
 >
 > `interval` (Bool, optional, default to 3600): the update interval of managed config.
 >
-> `strict` (Bool, optional, default to false): weather need strict update when managed config outdated.
+> `strict` (Bool, optional, default to false): weather needs a strict update when managed config outdated.
 
 ## Modifier
 
 ### Group Modifier
 
-There's two kind of group modifier, `replace` or `modify`, you can declare the type in any surge group, the default type is `replace`.
+There are two kinds of group modifier, `replace` or `modify`, you can declare the type in any surge group, the default type is `replace`.
 
 ``` Properties
 [General]
@@ -46,15 +46,15 @@ There's two kind of group modifier, `replace` or `modify`, you can declare the t
 #!type modify
 ```
 
-The replacing modifier will replace the entire group of current profile, while the modifying modifier will just do some modification to the group of current profile.
+The replacing modifier will replace the entire group of the current profile, while the modifying modifier will just do some modification to the group of the current profile.
 
 ### Plain line
 
-The plain line is only supported in replacing modifier, you can just write the config as in the surge config. Plain line will be ignored when written in modifying modifier.
+The plain line is only supported in replacing modifier, you can just write the config as in the surge config. The plain line will be ignored when written in a basic modifier.
 
 ``` Properties
 [General]
-#!type repalce
+#!type replace
 # > General
 http-listen = 0.0.0.0:8888
 socks5-listen = 0.0.0.0:8889
@@ -67,7 +67,7 @@ proxy-test-url = http://www.qualcomm.cn/generate_204
 
 ### Modifier line
 
-The modifier line declares how to modify the group of current profile. You can declare the modifier line by adding `#!insert` or `#!append` before any plain line, it will insert or append the line to the group of current profile.
+The modifier line declares how to modify the group of the current profile. You can declare the modifier line by adding `#!insert` or `#!append` before any plain line, it will insert or append the line to the group of the current profile.
 
 ``` Properties
 [Rule]
@@ -85,7 +85,7 @@ The modifier line declares how to modify the group of current profile. You can d
 
 ### Remote resources
 
-You can add some remote resource to modifier, it will replace the line by the same group of the remote profile.
+You can add some remote resource to the modifier, it will replace the line by the same group of the remote profile.
 
 ``` Properties
 [URL Rewrite]
@@ -93,8 +93,8 @@ You can add some remote resource to modifier, it will replace the line by the sa
 #!insert $from('https://raw.githubusercontent.com/rixCloud-Inc/rixCloud_Surge-Data/master/surge3_rules')
 
 # > the modifier will find the same group (URL Rewrite) of the remote resource (or just using the
-# >   whole remote resource), and insert them to the start of current group (URL Rewrite). The modifier
-# >   will find the same group (URL Rewrite) of the remote resource, and insert them to the start of
+# >   whole remote resource), and insert them to the start of the current group (URL Rewrite). The modifier
+# >   will find the same group (URL Rewrite) of the remote resource and insert them to the start of
 # >   current group (URL Rewrite).
 
 [MITM]
@@ -104,7 +104,7 @@ $from('https://raw.githubusercontent.com/lhie1/Rules/master/Surge/Surge%203/MitM
 
 ### Update modifier
 
-There are three kind of update modifier, `insert`, `append` and `replace`.
+There are three kinds of update modifier, `insert`, `append`, and `replace`.
 
 ``` Properties
 [Proxy Group]
@@ -127,13 +127,13 @@ Proxy = select, Direct
 
 ### Proxy filter
 
-You can use `$group('Name', operator, 'operand')` to filter the keys of the modifier group with specific name. You can use `#!name XXX` to specific the name of the group.
+You can use the code `$group('Name', operator, 'operand')` to filter the keys of the modifier group with a specific name. You can use `#!name XXX` to specify the name of the group.
 
 #### Supported operator
 
 > `contains` filter the keys whose name contains the operand.
 >
-> `matches` filter the keys whose name (regex) match the operand.
+> `matches` filter the keys whose name (regex) matches the operand.
 >
 > `prefix` filter the keys whose name has operand prefix.
 >
