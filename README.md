@@ -155,5 +155,11 @@ You can use the code `$group('Name', operator, 'operand')` to filter the keys of
 
 ## Example
 
+### Modifier example
+
 - [basicRules.conf](https://github.com/Kaelzs/SS-Modifier/tree/master/basicRules.conf)
 - [modifier.example.conf](https://github.com/Kaelzs/SS-Modifier/tree/master/modifier.example.conf)
+
+### Request example
+
+> https://ss.kaelzs.com/surge/convert?urls[]=https%3A%2F%2Fraw.githubusercontent.com%2FKaelzs%2FSS-Modifier%2Fmaster%2Fhead.conf&urls[]=https%3A%2F%2Fraw.githubusercontent.com%2FKaelzs%2FSS-Modifier%2Fmaster%2FbasicRules.conf&urls[]=https%3A%2F%2Fraw.githubusercontent.com%2FKaelzs%2FSS-Modifier%2Fmaster%2Fother.conf&urls[]=https%3A%2F%2Fraw.githubusercontent.com%2FKaelzs%2FSS-Modifier%2Fmaster%2Fmitm.conf&interval=900&name=surge.conf
