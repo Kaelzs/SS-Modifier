@@ -10,9 +10,13 @@ You can simply insert, replace, or delete some config in your surge profile. All
 
 ## Intro
 
-SS modifier is written in pure Swift.
+SS modifier is written in pure Swift (using vapor).
 
-Feel free to leave any issues.
+Feel free to open pull request or leave any issues.
+
+## Build
+
+Just clone this repo and open `Package.swift` in `server` folder (using Xcode).
 
 ## Send Request
 
