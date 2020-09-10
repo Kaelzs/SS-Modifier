@@ -36,17 +36,28 @@ Feel free to leave any issues.
 
 ### Group Modifier
 
-There are two kinds of group modifier, `replace` or `modify`, you can declare the type in any surge group, the default type is `replace`.
+There are two kinds of group modifier, `replace` or `modify`, you can declare the type in any surge group, the default type is `replace`, you can specify the type using `#!type $TYPE`.
+
+The replacing modifier will replace the entire group of the current profile, while the modifying modifier will just do some modification to the group of the current profile.
+
+You can also specify the name of the modifier using `#!name $NAME`
+
+Supported Options:
+
+- `#!basedOnResources`: to indicate that the modifier is based on the resource and the modifier will be ignored if the resource fails to load.
+
+- `#!requiredModifiers $NAMEA, $NAMEB`: to indicate that the modifier is based on the specific modifier and the modifier will be ignored if any of the modifiers is ignored.
 
 ``` Properties
 [General]
 #!type replace
+#!name general0
+#!basedOnResources
 
 [Replica]
 #!type modify
+#!requiredModifiers general0
 ```
-
-The replacing modifier will replace the entire group of the current profile, while the modifying modifier will just do some modification to the group of the current profile.
 
 ### Plain line
 
