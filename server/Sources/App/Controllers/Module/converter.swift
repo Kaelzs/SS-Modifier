@@ -19,7 +19,7 @@ extension SurgeController {
         }
 
         URLCache.shared.removeAllCachedResponses()
-        
+
         return urls.map { req.client.get(URI(string: $0.absoluteString)) }
             .flatten(on: req.eventLoop)
             .flatMap { modifierResponses -> EventLoopFuture<([(ClientResponse, URL)], [Surge.GroupModifier])> in
