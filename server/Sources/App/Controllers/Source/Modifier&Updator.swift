@@ -161,31 +161,25 @@ extension Surge.GroupModifier {
             guard case .keyValue(let kv) = modifier else {
                 return modifier
             }
+
+            var values = kv.values
+
             switch self.type {
             case .insert(let index, let value):
-                var values = kv.values
                 values.insert(value, at: index)
-                return .keyValue(Modifier.KeyValue(key: kv.key, values: values, functionIndics: kv.functionIndics.map({ $0 >= index ? $0 + 1 : $0 })))
             case .append(let index, let value):
-                var values = kv.values
                 values.insert(value, at: values.count - index)
-                return .keyValue(Modifier.KeyValue(key: kv.key, values: values, functionIndics: kv.functionIndics))
             case .replace(let value):
-                return .keyValue(Modifier.KeyValue(key: kv.key, values: [value], functionIndics: []))
+                values = [value]
             case .delete(let index):
                 var values = kv.values
-                values.remove(at: index)
-                return .keyValue(Modifier.KeyValue(key: kv.key, values: values, functionIndics: kv.functionIndics.compactMap({ functionIndex in
-                    if functionIndex < index {
-                        return functionIndex
-                    } else if functionIndex == index {
-                        return nil
-                    } else {
-                        return functionIndex - 1
-                    }
-                })))
+                if values.count > index {
+                    values.remove(at: index)
+                }
             }
+            let newRawValue = kv.key + "=" + values.joined(by: ",")
 
+            return .init(newRawValue, supportKeyValue: true)
         }
     }
 }
