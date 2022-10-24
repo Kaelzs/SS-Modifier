@@ -182,7 +182,7 @@ extension Surge.GroupModifier {
 extension Surge.GroupModifier {
     public typealias Resources = [URL: String]
     private static let nextGroupRegex = try! NSRegularExpression(pattern: #"^\n*\[([^\r\n]+)\]"#, options: [.anchorsMatchLines])
-    private func flat(modifier: Modifier, withResource resources: Resources) -> [Modifier] {
+    private func flat(modifier: Modifier, withResource resources: Resources, skipNormalProxy: Bool) -> [Modifier] {
         guard case .resource(let url) = modifier else {
             return [modifier]
         }
@@ -209,19 +209,33 @@ extension Surge.GroupModifier {
             toHandledContents = resource
         }
 
-        let toHandledLinse = toHandledContents.trimmingCharacters(in: .whitespaces).components(separatedBy: .newlines)
+        let toHandledLines = toHandledContents.trimmingCharacters(in: .whitespaceAndNewline).components(separatedBy: .newlines)
 
         let groupSupportKeyValue = Surge.Group.isKeyValueGroup(groupName)
 
+        var toHandledModifiers = toHandledLines.map({ Modifier($0, supportKeyValue: groupSupportKeyValue) })
+
+        if self.groupName.lowercased() == "proxy",
+           skipNormalProxy {
+            toHandledModifiers.removeAll { modifier in
+                if case let .keyValue(kv) = modifier,
+                   kv.values.count == 1,
+                   ["direct", "reject", "reject-tinygif"].contains(kv.values[0]) {
+                    return true
+                }
+                return false
+            }
+        }
+
         return [Modifier.plain("# resource from \(url.absoluteString)")]
-            + toHandledLinse.map({ Modifier($0, supportKeyValue: groupSupportKeyValue) })
+            + toHandledModifiers
             + [Modifier.plain("# resource end \(url.absoluteString)")]
     }
 
     struct ResourceError: Error {
         let url: URL
     }
-    func flat(withResources resources: Resources) -> Result<Self, ResourceError> {
+    func flat(withResources resources: Resources, skipNormalProxy: Bool) -> Result<Self, ResourceError> {
         guard !self.resources.isEmpty else {
             return .success(self)
         }
@@ -232,8 +246,8 @@ extension Surge.GroupModifier {
         }
 
         var copy = self
-        copy.insertedModifiers = copy.insertedModifiers.flatMap { self.flat(modifier: $0, withResource: resources) }
-        copy.appendedModifiers = copy.appendedModifiers.flatMap { self.flat(modifier: $0, withResource: resources) }
+        copy.insertedModifiers = copy.insertedModifiers.flatMap { self.flat(modifier: $0, withResource: resources, skipNormalProxy: skipNormalProxy) }
+        copy.appendedModifiers = copy.appendedModifiers.flatMap { self.flat(modifier: $0, withResource: resources, skipNormalProxy: skipNormalProxy) }
 
         return .success(copy)
     }

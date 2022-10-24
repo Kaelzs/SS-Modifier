@@ -11,11 +11,11 @@ import Foundation
 public enum Surge { }
 
 extension Surge {
-    static func generate(with groupModifiers: [GroupModifier], resources: Surge.GroupModifier.Resources) -> String {
+    static func generate(with groupModifiers: [GroupModifier], resources: Surge.GroupModifier.Resources, skipNormalProxy: Bool) -> String {
 
         // 1. flat all resource modifiers.
         let flattedGroupModifiers: [GroupModifier] = groupModifiers.map { groupModifier in
-            let flatResult = groupModifier.flat(withResources: resources)
+            let flatResult = groupModifier.flat(withResources: resources, skipNormalProxy: skipNormalProxy)
 
             switch flatResult {
             case .success(let flattedModifier):

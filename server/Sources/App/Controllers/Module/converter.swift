@@ -49,7 +49,8 @@ extension SurgeController {
                 }
             }
 
-            let profile = Surge.generate(with: groupModifiers, resources: resources)
+            let skipNormalProxy = req.getBool(key: "skipNormalProxy") ?? req.getBool(key: "skipnormalproxy") ?? true
+            let profile = Surge.generate(with: groupModifiers, resources: resources, skipNormalProxy: skipNormalProxy)
 
             let needManaged = req.getBool(key: "managed") ?? true
             let prefix: String
